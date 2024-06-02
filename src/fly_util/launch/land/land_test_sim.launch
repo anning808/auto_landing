@@ -1,0 +1,22 @@
+<launch>
+=
+	<!-- run the autonomous_landing.cpp -->
+	<node pkg="fly_util" type="autonomous_landing" name="autonomous_landing" output="screen" >
+
+		<!-- 追踪控制参数 -->
+		<!-- 2021.1.18 飞机离地高度和相机中心相对与二维码中心的直线距离小于等于0.3,触发land指令 -->
+		<param name="kpx_land" value="0.2" />
+		<param name="kpy_land" value="0.2" />
+		<param name="kpz_land" value="0.1" /> 
+
+	</node>
+
+	<!-- run the px4_sender.cpp -->
+	<node pkg="fly_util" type="px4_sender" name="px4_sender" output="screen">
+	<rosparam command="load" file="$(find fly_util)/config/land_control/px4_sender_outdoor.yaml"/>
+	</node>
+	
+
+
+
+</launch>

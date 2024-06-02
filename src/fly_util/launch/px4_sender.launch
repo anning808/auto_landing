@@ -1,0 +1,11 @@
+<launch>
+	<!-- run the position_control.cpp -->
+
+	<node pkg="fly_util" type="px4_sender" name="px4_sender" output="screen">
+
+		<!-- load blacklist, config -->
+		<rosparam command="load" file="$(find fly_util)/config/Parameter_for_control.yaml" />
+
+
+	</node>
+</launch>

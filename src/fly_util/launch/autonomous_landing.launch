@@ -1,0 +1,16 @@
+<launch>
+	<!-- run the position_control.cpp -->
+
+	<node pkg="fly_util" type="autonomous_landing" name="autonomous_landing" output="screen">
+
+		<!-- load blacklist, config -->
+                <rosparam command="load" file="$(find fly_util)/config/autonomous_landing.yaml" />
+	</node>
+		<node pkg="fly_util" type="trak" name="trak" output="screen">
+
+	</node>
+  	<!-- run the px4_sender.cpp -->
+	<node pkg="fly_util" type="px4_sender" name="px4_sender" output="screen">
+	<rosparam command="load" file="$(find fly_util)/config/land_control/px4_sender_outdoor.yaml"/>
+	</node>
+</launch>

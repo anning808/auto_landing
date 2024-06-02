@@ -1,0 +1,57 @@
+<launch> 
+
+	<!-- 
+	二维码降落
+	search_alt_：预定搜索高度
+	markers_id_ ：ar_markers 二维码数字
+    desire_pose_x、desire_pose_y、desire_pose_z：期望的飞机相对降落板的位置,当desire_pose_z小于0.3m时会自动降落
+	PidXY_p：x,y方向p项系数
+	PidXY_d：x,y方向d项系数
+	PidXY_i：x,y方向i项系数
+	PidZ_p：z方向p项系数
+	PidZ_d：z方向d项系数
+	PidZ_i：z方向i项系数
+	PidYaw_p：yaw方向的p系数
+	PidYaw_d：yaw方向的d系数
+	PidYaw_i：yaw方向的i系数
+
+	关于其中的yaw角度，yaw为0度的情况是：摄像头图像左上为"0"markers时
+	desire_yaw_:弧度值
+-->
+
+  <arg name="world_path" default="$(find px4)/Tools/simulation/gazebo/sitl_gazebo/worlds/landing_place.world" />
+
+
+    <node pkg="tf" name="tf_depthCamera" type="static_transform_publisher" args="0 0 0 -1.57 0 -1.57 base_link depth_camera_link 100"/>
+
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="world" default="$(arg world_path)" />
+    <arg name="sdf" default="$(find px4)/Tools/simulation/gazebo/sitl_gazebo/models/iris_depth_camera_down/iris_depth_camera_down.sdf" />
+    <arg name="verbose" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <include file="$(find px4)/launch/mavros_posix_sitl.launch" >
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+        <arg name="R" value="$(arg R)"/>
+        <arg name="P" value="$(arg P)"/>
+        <arg name="Y" value="$(arg Y)"/>
+        <arg name="sdf" value="$(arg sdf)" />
+        <arg name="verbose" value="$(arg verbose)" />
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="world" value="$(arg world)" />
+    </include>
+
+
+    <!-- rviz view /-->
+    <node pkg="rviz" type="rviz" name="down" args="-d $(find px4)/launch/ar_track_camera.rviz"/>
+
+</launch>
+
